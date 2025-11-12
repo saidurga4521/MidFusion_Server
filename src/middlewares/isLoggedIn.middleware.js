@@ -4,7 +4,7 @@ import sendResponse from "../utils/response.util.js";
 
 const isLoggedIn = async (req, res, next) => {
   const token = req.cookies.token;
-
+  console.log("The token",token)
   if (!token) {
     return sendResponse(res, "User not authorised", 401);
   }

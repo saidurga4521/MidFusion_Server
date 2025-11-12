@@ -38,7 +38,7 @@ export const getUserInfo = async (req, res) => {
   const { email, id } = req.user;
   // const user = await User.findOne({ email });
   // const Preferences = await Preferences.findOne({ userId: id });
-
+  console.log({email,id});
   const [user, preferences, subscription] = await Promise.all([
     User.findOne({ email }).lean(),
     Preferences.findOne({ userId: id }).lean(),
@@ -46,7 +46,7 @@ export const getUserInfo = async (req, res) => {
       "plan currentPeriodEnd status"
     )
   ]);
-
+  console.log("The user",user)
     return sendResponse(res, "User logged in Successfully", 200, {
       id: user._id,
       email: user.email,
@@ -136,6 +136,7 @@ export const login = async (req, res) => {
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
       maxAge: rememberMe ? toMs("2d") : toMs("4h"), // shorter if not remembered
     };
     console.log("here")
@@ -152,6 +153,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: toMs("30d"),
+sameSite: "none",
     };
     res.cookie("refreshToken", refreshToken, refreshOptions);
 
